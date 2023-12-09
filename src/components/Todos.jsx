@@ -44,7 +44,7 @@ function Todos() {
   if (todos.length === 0) {
     return (
       <>
-        <div className="mt-4 mb-4 text-lg font-bold">No Todos available</div>
+        <div className="mt-4 mb-4 text-md font-medium">No Todos available</div>
       </>
     );
   }
