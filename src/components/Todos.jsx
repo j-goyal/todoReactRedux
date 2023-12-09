@@ -44,17 +44,17 @@ function Todos() {
   if (todos.length === 0) {
     return (
       <>
-        <div className="mt-4 mb-4 text-md font-medium">No Todos available</div>
+        <div className="mt-4 mb-4 text-md text-white font-medium">No Todos available</div>
       </>
     );
   }
 
   return (
     <>
-      <div className="mt-4 mb-4 text-md font-medium">Todos List</div>
+      <div className="mt-4 mb-4 text-md text-white font-medium">Todos List</div>
       <ul className="list-none">
         {todos.map((todo) => (
-          <li key={todo.id} className={`mt-4 p-4 rounded ${editingTodo === todo.id ? ' bg-zinc-500' : ' bg-zinc-800'}`}>
+          <li key={todo.id} className={`mt-4 p-2.5 rounded-lg ${editingTodo === todo.id ? ' bg-gray-600' : ' bg-gray-900'}`}>
             <div className="flex items-center justify-between">
               <div className="flex items-center w-full">
                 <input
@@ -86,14 +86,14 @@ function Todos() {
                 <div className="flex items-center">
                   <button
                     onClick={() => handleUpdateTodo(todo.id, updatedText, todo.completed)}
-                    className="text-white border-0 py-1 px-2 focus:outline-none hover:bg-gray-600 rounded text-md"
+                    className="text-white border-0 py-1 px-2 focus:outline-none hover:bg-indigo-600 rounded text-md"
                     title="Save"
                   >
                     📁
                   </button>
                   <button
                     onClick={handleCancelEdit}
-                    className="text-white border-0 py-1 px-2 focus:outline-none hover:bg-gray-600 rounded text-md"
+                    className="text-white border-0 py-1 px-2 focus:outline-none hover:bg-indigo-600 rounded text-md"
                     title='Cancel'
                   >
                     ❌
@@ -104,7 +104,7 @@ function Todos() {
                 <div className="flex items-center">
                   <button
                     onClick={() => handleEditClick(todo)}
-                    className={`text-white border-0 py-1 px-2 focus:outline-none hover:bg-gray-600 rounded text-md ${
+                    className={`text-white border-0 py-1 px-2 focus:outline-none hover:bg-indigo-600 rounded text-md ${
                       todo.completed ? 'cursor-not-allowed' : ''
                     }`}
                     title="Edit"
@@ -114,7 +114,7 @@ function Todos() {
                   </button>
                   <button
                     onClick={() => dispatch(removeTodo(todo.id))}
-                    className="text-white border-0 py-1 px-2 focus:outline-none hover:bg-gray-600 rounded text-md"
+                    className="text-white border-0 py-1 px-2 focus:outline-none hover:bg-indigo-600 rounded text-md"
                     title="Delete"
                   >
                     <svg
