@@ -2,7 +2,7 @@ import {useState} from 'react'
 import {useDispatch} from 'react-redux'
 import {addTodo} from '../features/todo/todoSlice' 
 
-function AddTodo() {
+function AddTodos() {
 
     const [input, setInput] = useState('')
     const dispatch = useDispatch()
@@ -35,4 +35,4 @@ function AddTodo() {
   )
 }
 
-export default AddTodo
+export default AddTodos
