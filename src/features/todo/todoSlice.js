@@ -1,29 +1,36 @@
 import { createSlice, nanoid } from "@reduxjs/toolkit";
 
-const initalState = {
-    Todos : [{id:1, text:"Always Be Happy", completed: false}]
-}
+const initialState = {
+  Todos: JSON.parse(localStorage.getItem("todos")) || [{ id: 1, text: "Always Be Happy", completed: false }],
+};
 
 export const todoSlice = createSlice({
-    name : "todo",
-    initialState:initalState,
-    reducers:{
-        addTodo: (state,action) => {
-            const todo = {id:nanoid(), text: action.payload, completed:false};
-            state.Todos.push(todo);
-
-        },
-        removeTodo: (state,action) => {
-            state.Todos = state.Todos.filter(todo => todo.id !== action.payload)
-        },
-        updateTodo: (state, action) => {
-            const { id, text, completed } = action.payload;
-            state.Todos = state.Todos.map((todo) =>
-              todo.id === id ? { ...todo, text, completed } : todo
-            );
-        }
-    }
+  name: "todo",
+  initialState: initialState,
+  reducers: {
+    addTodo: (state, action) => {
+      const todo = { id: nanoid(), text: action.payload, completed: false };
+      state.Todos.push(todo);
+      updateLocalStorage(state.Todos);
+    },
+    removeTodo: (state, action) => {
+      state.Todos = state.Todos.filter((todo) => todo.id !== action.payload);
+      updateLocalStorage(state.Todos);
+    },
+    updateTodo: (state, action) => {
+      const { id, text, completed } = action.payload;
+      state.Todos = state.Todos.map((todo) =>
+        todo.id === id ? { ...todo, text, completed } : todo
+      );
+      updateLocalStorage(state.Todos);
+    },
+  },
 });
 
-export const{addTodo, removeTodo, updateTodo} = todoSlice.actions;
+export const { addTodo, removeTodo, updateTodo } = todoSlice.actions;
 export default todoSlice.reducer;
+
+// Function to update localStorage with the current todos
+const updateLocalStorage = (todos) => {
+  localStorage.setItem("todos", JSON.stringify(todos));
+};
