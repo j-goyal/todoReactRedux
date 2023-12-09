@@ -1,31 +1,43 @@
-import { useState, useRef, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { removeTodo, updateTodo } from '../features/todo/todoSlice';
+import { useState, useRef, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { removeTodo, updateTodo } from "../features/todo/todoSlice";
+import Notification from "./Notification";
+import { showNotification } from "../features/notification/notificationSlice";
 
 function Todos() {
-  const todos = useSelector((state) => state.Todos);
+  const todos = useSelector((state) => state.Todo.Todos);
   const dispatch = useDispatch();
   const [editingTodo, setEditingTodo] = useState(null);
-  const [updatedText, setUpdatedText] = useState('');
+  const [updatedText, setUpdatedText] = useState("");
   const inputRef = useRef(null);
 
+
   const handleUpdateTodo = (id, newText, completed) => {
-    if (newText.trim() === '') {
+    if (newText.trim() === "") {
+      dispatch(showNotification({notificationMessage:"Todo text cannot be empty!", notificationType: "warning"}));
       return;
     }
     dispatch(updateTodo({ id, text: newText, completed }));
     setEditingTodo(null);
-    setUpdatedText('');
+    setUpdatedText("");
+
+    dispatch(showNotification({notificationMessage:"Todo updated successfully!", notificationType :"success"}));
   };
 
   const handleCancelEdit = () => {
     setEditingTodo(null);
-    setUpdatedText('');
+    setUpdatedText("");
   };
 
   const handleToggleComplete = (id, completed) => {
     if (!editingTodo) {
-      dispatch(updateTodo({ id, completed: !completed, text: todos.find((todo) => todo.id === id).text }));
+      dispatch(
+        updateTodo({
+          id,
+          completed: !completed,
+          text: todos.find((todo) => todo.id === id).text,
+        })
+      );
     }
   };
 
@@ -33,6 +45,11 @@ function Todos() {
     setEditingTodo(todo.id);
     setUpdatedText(todo.text);
   };
+  
+  const handleDeleteClick = (id) =>{
+    dispatch(removeTodo(id));
+    dispatch(showNotification({notificationMessage:"Todo deleted successfully!", notificationType :"success"}));
+  }
 
   useEffect(() => {
     // Focus on the input field after rendering
@@ -44,17 +61,25 @@ function Todos() {
   if (todos.length === 0) {
     return (
       <>
-        <div className="mt-4 mb-4 text-md text-white font-medium">No Todos available</div>
+        <div className="mt-4 mb-4 text-md text-white font-medium">
+          No Todos available
+        </div>
       </>
     );
   }
 
   return (
     <>
+    <Notification/>
       <div className="mt-4 mb-4 text-md text-white font-medium">Todos List</div>
       <ul className="list-none">
         {todos.map((todo) => (
-          <li key={todo.id} className={`mt-4 p-2.5 rounded-lg ${editingTodo === todo.id ? ' bg-gray-600' : ' bg-gray-900'}`}>
+          <li
+            key={todo.id}
+            className={`mt-4 p-2.5 rounded-lg ${
+              editingTodo === todo.id ? " bg-gray-600" : " bg-gray-900"
+            }`}
+          >
             <div className="flex items-center justify-between">
               <div className="flex items-center w-full">
                 <input
@@ -76,7 +101,11 @@ function Todos() {
                   </>
                 ) : (
                   <>
-                    <div className={`text-white ${todo.completed ? 'line-through' : ''}`}>
+                    <div
+                      className={`text-white ${
+                        todo.completed ? "line-through" : ""
+                      }`}
+                    >
                       {todo.text}
                     </div>
                   </>
@@ -85,7 +114,9 @@ function Todos() {
               {editingTodo === todo.id && (
                 <div className="flex items-center">
                   <button
-                    onClick={() => handleUpdateTodo(todo.id, updatedText, todo.completed)}
+                    onClick={() =>
+                      handleUpdateTodo(todo.id, updatedText, todo.completed)
+                    }
                     className="text-white border-0 py-1 px-2 focus:outline-none hover:bg-indigo-600 rounded text-md"
                     title="Save"
                   >
@@ -94,7 +125,7 @@ function Todos() {
                   <button
                     onClick={handleCancelEdit}
                     className="text-white border-0 py-1 px-2 focus:outline-none hover:bg-indigo-600 rounded text-md"
-                    title='Cancel'
+                    title="Cancel"
                   >
                     ❌
                   </button>
@@ -105,7 +136,7 @@ function Todos() {
                   <button
                     onClick={() => handleEditClick(todo)}
                     className={`text-white border-0 py-1 px-2 focus:outline-none hover:bg-indigo-600 rounded text-md ${
-                      todo.completed ? 'cursor-not-allowed' : ''
+                      todo.completed ? "cursor-not-allowed" : ""
                     }`}
                     title="Edit"
                     disabled={todo.completed}
@@ -113,7 +144,7 @@ function Todos() {
                     ✏️
                   </button>
                   <button
-                    onClick={() => dispatch(removeTodo(todo.id))}
+                    onClick={() => handleDeleteClick(todo.id)}
                     className="text-white border-0 py-1 px-2 focus:outline-none hover:bg-indigo-600 rounded text-md"
                     title="Delete"
                   >
