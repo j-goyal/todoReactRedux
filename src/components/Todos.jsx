@@ -56,7 +56,7 @@ function Todos() {
         {todos.map((todo) => (
           <li key={todo.id} className={`mt-4 p-4 rounded ${editingTodo === todo.id ? ' bg-zinc-500' : ' bg-zinc-800'}`}>
             <div className="flex items-center justify-between">
-              <div className="flex items-center">
+              <div className="flex items-center w-full">
                 <input
                   type="checkbox"
                   checked={todo.completed}
@@ -70,7 +70,7 @@ function Todos() {
                       type="text"
                       value={updatedText}
                       onChange={(e) => setUpdatedText(e.target.value)}
-                      className="text-white bg-transparent border-none focus:outline-none"
+                      className="text-white bg-transparent border-none focus:outline-none w-full"
                       ref={inputRef}
                     />
                   </>
