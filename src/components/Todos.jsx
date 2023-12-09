@@ -15,6 +15,8 @@ function Todos() {
   const handleUpdateTodo = (id, newText, completed) => {
     if (newText.trim() === "") {
       dispatch(showNotification({notificationMessage:"Todo text cannot be empty!", notificationType: "warning"}));
+      if(inputRef.current) 
+        inputRef.current.focus();
       return;
     }
     dispatch(updateTodo({ id, text: newText, completed }));

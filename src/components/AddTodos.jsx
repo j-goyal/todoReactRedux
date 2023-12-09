@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { addTodo } from "../features/todo/todoSlice";
 import Notification from "./Notification";
@@ -7,12 +7,14 @@ import { showNotification } from "../features/notification/notificationSlice";
 function AddTodos() {
   const [input, setInput] = useState("");
   const dispatch = useDispatch();
+  const inputAddRef = useRef(null);
 
   const addTodoHandler = (e) => {
     e.preventDefault();
 
     if (input.trim() === "") {
       dispatch(showNotification({ notificationMessage: 'Please enter a todo!', notificationType: 'warning' }));
+      inputAddRef.current.focus();
       return;
     }
 
@@ -31,6 +33,7 @@ function AddTodos() {
           placeholder="Enter a Todo..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
+          ref={inputAddRef}
         />
         <button
           type="submit"
