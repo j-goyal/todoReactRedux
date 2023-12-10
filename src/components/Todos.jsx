@@ -19,7 +19,7 @@ function Todos() {
         inputRef.current.focus();
       return;
     }
-    dispatch(updateTodo({ id, text: newText, completed }));
+    dispatch(updateTodo({ id, text: newText.trim(), completed }));
     setEditingTodo(null);
     setUpdatedText("");
 
@@ -33,13 +33,18 @@ function Todos() {
 
   const handleToggleComplete = (id, completed) => {
     if (!editingTodo) {
-      dispatch(
-        updateTodo({
-          id,
-          completed: !completed,
-          text: todos.find((todo) => todo.id === id).text,
-        })
-      );
+      const newCompletedState = !completed;
+  
+      dispatch(updateTodo({
+        id,
+        completed: newCompletedState,
+        text: todos.find((todo) => todo.id === id).text
+      }));
+  
+      const actionVerb = newCompletedState ? 'completed' : 'incompleted';
+      const notificationMessage = `Todo marked ${actionVerb} successfully`;
+  
+      dispatch(showNotification({ notificationMessage, notificationType: 'success' }));
     }
   };
 
@@ -88,7 +93,7 @@ function Todos() {
                   type="checkbox"
                   checked={todo.completed}
                   onChange={() => handleToggleComplete(todo.id, todo.completed)}
-                  className="mr-2"
+                  className="mr-2 accent-indigo-600"
                   disabled={editingTodo === todo.id}
                 />
                 {editingTodo === todo.id ? (
@@ -137,8 +142,8 @@ function Todos() {
                 <div className="flex items-center">
                   <button
                     onClick={() => handleEditClick(todo)}
-                    className={`text-white border-0 py-1 px-2 focus:outline-none hover:bg-indigo-600 rounded text-md ${
-                      todo.completed ? "cursor-not-allowed" : ""
+                    className={`text-white border-0 py-1 px-2 focus:outline-none rounded text-md ${
+                      todo.completed ? "cursor-not-allowed" : "hover:bg-indigo-600"
                     }`}
                     title="Edit"
                     disabled={todo.completed}
