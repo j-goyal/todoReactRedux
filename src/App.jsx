@@ -6,7 +6,7 @@ function App() {
 
   return (
     <>
-      <div className="text-3xl text-white text-center mt-8 mb-4">📝Todo React Redux </div>
+      <div className="text-3xl text-white text-center mt-8 mb-4">📝My Todo </div>
       <AddTodo/>
       <Todos/>
     </>
